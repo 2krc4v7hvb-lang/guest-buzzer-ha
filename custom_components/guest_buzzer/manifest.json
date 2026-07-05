@@ -1,11 +1,11 @@
 {
   "domain": "guest_buzzer",
   "name": "Guest Access Buzzer",
-  "codeowners": ["@andrewsjlucas"],
+  "codeowners": ["@2krc4v7hvb-lang"],
   "config_flow": true,
-  "documentation": "https://github.com/andrewsjlucas/guest-buzzer-ha",
+  "documentation": "https://github.com/2krc4v7hvb-lang/guest-buzzer-ha",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/andrewsjlucas/guest-buzzer-ha/issues",
+  "issue_tracker": "https://github.com/2krc4v7hvb-lang/guest-buzzer-ha/issues",
   "requirements": [],
   "version": "1.0.0"
 }
