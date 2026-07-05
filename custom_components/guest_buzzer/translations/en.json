@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Guest Access Buzzer",
+        "description": "Enter your buzzer base URL and arm key (find both under Buzzer Settings → Siri / Shortcuts in the admin).",
+        "data": {
+          "base_url": "Base URL (e.g. https://room1619.com)",
+          "key": "Arm key"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Couldn't reach the buzzer status endpoint. Check the base URL.",
+      "invalid_auth": "The arm key was rejected."
+    },
+    "abort": {
+      "already_configured": "This buzzer is already set up."
+    }
+  }
+}
