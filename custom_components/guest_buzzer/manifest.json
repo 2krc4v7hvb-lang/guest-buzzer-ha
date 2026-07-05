@@ -3,9 +3,10 @@
   "name": "Guest Access Buzzer",
   "codeowners": ["@2krc4v7hvb-lang"],
   "config_flow": true,
+  "dependencies": ["webhook"],
   "documentation": "https://github.com/2krc4v7hvb-lang/guest-buzzer-ha",
-  "iot_class": "cloud_polling",
+  "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/2krc4v7hvb-lang/guest-buzzer-ha/issues",
   "requirements": [],
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

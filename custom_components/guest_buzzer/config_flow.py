@@ -4,6 +4,7 @@ from __future__ import annotations
 import voluptuous as vol
 
 from homeassistant import config_entries
+from homeassistant.components import webhook as ha_webhook
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -62,7 +63,12 @@ class BuzzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     pass
 
                 return self.async_create_entry(
-                    title=title, data={CONF_BASE_URL: base, CONF_KEY: key}
+                    title=title,
+                    data={
+                        CONF_BASE_URL: base,
+                        CONF_KEY: key,
+                        "webhook_id": ha_webhook.async_generate_id(),
+                    },
                 )
 
         schema = vol.Schema(

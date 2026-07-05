@@ -1,12 +1,13 @@
-"""Polling coordinator for the Guest Access Buzzer."""
+"""Polling + push coordinator for the Guest Access Buzzer."""
 from __future__ import annotations
 
 import asyncio
 import logging
 from datetime import timedelta
 
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
@@ -15,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class BuzzerCoordinator(DataUpdateCoordinator):
-    """Polls /api/arm-status and triggers /api/arm."""
+    """Polls /api/arm-status, triggers /api/arm, and accepts push updates."""
 
     def __init__(
         self, hass: HomeAssistant, base_url: str, key: str, scan_interval: int = DEFAULT_SCAN_INTERVAL
@@ -29,6 +30,7 @@ class BuzzerCoordinator(DataUpdateCoordinator):
         self._session = async_get_clientsession(hass)
         self.base_url = base_url.rstrip("/")
         self.key = key
+        self._unsub_expiry = None
 
     @property
     def status_url(self) -> str:
@@ -57,3 +59,29 @@ class BuzzerCoordinator(DataUpdateCoordinator):
             resp = await self._session.get(self.arm_url)
             resp.raise_for_status()
         await self.async_request_refresh()
+
+    @callback
+    def apply_push(self, data: dict) -> None:
+        """Apply a pushed state change immediately (from the webhook)."""
+        armed = bool(data.get("armed"))
+        secs = int(data.get("seconds_remaining") or 0)
+        new = dict(self.data or {})
+        new["armed"] = armed
+        new["seconds_remaining"] = secs if armed else 0
+        self.async_set_updated_data(new)
+
+        if self._unsub_expiry is not None:
+            self._unsub_expiry()
+            self._unsub_expiry = None
+        if armed and secs > 0:
+            # Push tells us when it ends; flip off locally at that time (polling
+            # is still the fallback if this is missed).
+            self._unsub_expiry = async_call_later(self.hass, secs, self._expire)
+
+    @callback
+    def _expire(self, _now) -> None:
+        self._unsub_expiry = None
+        new = dict(self.data or {})
+        new["armed"] = False
+        new["seconds_remaining"] = 0
+        self.async_set_updated_data(new)
