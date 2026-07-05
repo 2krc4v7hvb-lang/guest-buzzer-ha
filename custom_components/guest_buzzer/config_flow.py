@@ -53,17 +53,8 @@ class BuzzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 await self.async_set_unique_id(base)
                 self._abort_if_unique_id_configured()
 
-                # Use the property's display name if available.
-                title = "Guest Buzzer"
-                try:
-                    cfg = await (await session.get(f"{base}/api/config")).json()
-                    if cfg.get("property_name"):
-                        title = f"{cfg['property_name']} Buzzer"
-                except Exception:  # noqa: BLE001
-                    pass
-
                 return self.async_create_entry(
-                    title=title,
+                    title="Guest Buzzer",
                     data={
                         CONF_BASE_URL: base,
                         CONF_KEY: key,
