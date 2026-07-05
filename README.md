@@ -27,8 +27,13 @@ No YAML editing — set it up entirely from **Settings → Devices & Services**.
 
 That's it — the device and its entities are created automatically.
 
+## Options
+
+The integration's **Configure** button (on its card in Devices & Services) lets
+you set the **poll interval** (5–300 seconds, default 15). Changes apply
+immediately.
+
 ## Notes
 
-- Polls the status endpoint every 15 seconds.
 - The base URL + key together identify one property, so you can add multiple
   properties as separate entries.

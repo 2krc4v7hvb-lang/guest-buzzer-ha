@@ -17,12 +17,14 @@ _LOGGER = logging.getLogger(__name__)
 class BuzzerCoordinator(DataUpdateCoordinator):
     """Polls /api/arm-status and triggers /api/arm."""
 
-    def __init__(self, hass: HomeAssistant, base_url: str, key: str) -> None:
+    def __init__(
+        self, hass: HomeAssistant, base_url: str, key: str, scan_interval: int = DEFAULT_SCAN_INTERVAL
+    ) -> None:
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=DEFAULT_SCAN_INTERVAL),
+            update_interval=timedelta(seconds=scan_interval),
         )
         self._session = async_get_clientsession(hass)
         self.base_url = base_url.rstrip("/")

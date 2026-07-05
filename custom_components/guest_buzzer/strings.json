@@ -17,5 +17,15 @@
     "abort": {
       "already_configured": "This buzzer is already set up."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Guest Access Buzzer options",
+        "data": {
+          "scan_interval": "Poll interval (seconds)"
+        }
+      }
+    }
   }
 }
