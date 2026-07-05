@@ -5,7 +5,7 @@
         "title": "Guest Access Buzzer",
         "description": "Enter your buzzer base URL and arm key (find both under Buzzer Settings → Siri / Shortcuts in the admin).",
         "data": {
-          "base_url": "Base URL (e.g. https://room1619.com)",
+          "base_url": "Base URL (e.g. https://example.com)",
           "key": "Arm key"
         }
       }
